@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+  outline: none;
+}
+
+body {
+  align-items: center;
+  background: linear-gradient(#1e1e2f, #1e1e24);
+  color: #fff;
+  display: flex;
+  font-family: 'JetBrains Mono', sans-serif;
+  justify-content: center;
+  margin: 0px;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+table {
+  background: #27293d;
+  border: none !important;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1);
+  max-width: 70rem;
+  padding: 0.75rem;
+  text-align: center;
+  width: 100%;
+}
+
+table thead th {
+  border: 0px;
+  border-bottom: 1px solid #fff;
+  padding: 0px;
+  padding-bottom: 0.5rem;
+}
+
+table tbody tr td:first-of-type {
+  font-weight: 700;
+}
+
+table tbody tr td:first-of-type {
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+table tbody tr td {
+  padding: 0.5rem;
+  font-size: 0.75rem;
+}
