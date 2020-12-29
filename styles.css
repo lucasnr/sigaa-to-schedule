@@ -20,7 +20,7 @@ table {
   border: none !important;
   border-radius: 0.25rem;
   box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1);
-  max-width: 70rem;
+  max-width: 72rem;
   padding: 0.75rem;
   text-align: center;
   width: 100%;
@@ -35,9 +35,6 @@ table thead th {
 
 table tbody tr td:first-of-type {
   font-weight: 700;
-}
-
-table tbody tr td:first-of-type {
   font-size: 1rem;
   white-space: nowrap;
 }
@@ -45,4 +42,10 @@ table tbody tr td:first-of-type {
 table tbody tr td {
   padding: 0.5rem;
   font-size: 0.75rem;
+  vertical-align: top;
+}
+
+table tbody .container {
+  display: grid;
+  grid-gap: 0.5rem;
 }

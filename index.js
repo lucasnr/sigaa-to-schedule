@@ -38,12 +38,8 @@
       sigaa: '3N34',
     },
     {
-      name: 'CÁLCULO DIFERENCIAL E INTEGRAL I',
-      sigaa: '246M34',
-    },
-    {
       name: 'FUNDAMENTOS MATEMÁTICOS DA COMPUTAÇÃO I',
-      sigaa: '246N12',
+      sigaa: '246M34',
     },
     {
       name: 'VETORES E GEOMETRIA ANALÍTICA',
@@ -85,7 +81,17 @@
 
         daysIndexes.forEach((day) => {
           const td = tr.querySelector(`td:nth-child(${day + 1})`);
-          td.textContent = item.name;
+          if (td.textContent === '---') {
+            td.textContent = '';
+            const container = document.createElement('div');
+            container.classList.add('container');
+            td.appendChild(container);
+          }
+
+          const text = document.createElement('span');
+          text.textContent = item.name;
+
+          td.querySelector('.container').appendChild(text);
         });
       });
     }
