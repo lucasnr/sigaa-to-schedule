@@ -1,5 +1,9 @@
 (() => {
   const tbody = document.querySelector('table tbody');
+  const form = document.querySelector('form');
+  const nameInput = form.querySelector('#name');
+  const codeInput = form.querySelector('#code');
+  const items = form.querySelector('#items');
 
   const times = [
     '07:00 - 07:50',
@@ -51,7 +55,7 @@
 
 */
 
-  const schedule = [];
+  let schedule = [];
 
   function clearTable() {
     tbody.innerHTML = '';
@@ -110,9 +114,6 @@
   }
   makeTable();
 
-  const form = document.querySelector('form');
-  const nameInput = form.querySelector('#name');
-  const codeInput = form.querySelector('#code');
   form.onsubmit = (event) => {
     event.preventDefault();
     const newItem = {
@@ -121,5 +122,30 @@
     };
     schedule.push(newItem);
     makeTable();
+    displayItems();
   };
+
+  function displayItems() {
+    items.innerHTML = '';
+    schedule.forEach((item, index) => {
+      const button = document.createElement('button');
+      button.classList.add('item');
+      button.type = 'button';
+
+      const span = document.createElement('span');
+      span.textContent = `${item.name} (${item.sigaa})`;
+      const remove = document.createElement('i');
+      remove.textContent = '\u00D7';
+      button.appendChild(span);
+      button.appendChild(remove);
+
+      button.onclick = () => {
+        schedule = schedule.filter((item, i) => i !== index);
+        displayItems();
+        makeTable();
+      };
+
+      items.appendChild(button);
+    });
+  }
 })();

@@ -20,6 +20,10 @@ button {
   font-family: 'JetBrains Mono', sans-serif;
 }
 
+button {
+  cursor: pointer;
+}
+
 form {
   margin-right: 1rem;
   max-width: 14rem;
@@ -42,7 +46,7 @@ form input::placeholder {
   color: #fff;
 }
 
-form button {
+form button[type='submit'] {
   background-color: #fff;
   border: none;
   color: #1e1e2f;
@@ -52,6 +56,26 @@ form button {
   padding: 0.5rem 0.75rem;
   text-transform: uppercase;
   width: 100%;
+}
+
+form #items {
+  display: grid;
+  grid-gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+form #items button {
+  align-items: center;
+  background-color: transparent;
+  border: 1px solid #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+form #items button i {
+  font-size: 1rem;
+  font-style: normal;
 }
 
 table {
@@ -87,4 +111,9 @@ table tbody tr td {
 table tbody .container {
   display: grid;
   grid-gap: 0.5rem;
+}
+
+table tbody .container > * {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
 }
