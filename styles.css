@@ -6,13 +6,52 @@
 body {
   align-items: center;
   background: linear-gradient(#1e1e2f, #1e1e24);
-  color: #fff;
   display: flex;
-  font-family: 'JetBrains Mono', sans-serif;
   justify-content: center;
   margin: 0px;
   min-height: 100vh;
   padding: 1rem;
+}
+
+body,
+input,
+button {
+  color: #fff;
+  font-family: 'JetBrains Mono', sans-serif;
+}
+
+form {
+  margin-right: 1rem;
+  max-width: 14rem;
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+form input {
+  background-color: transparent;
+  border: 1px solid #fff;
+  display: block;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.75rem;
+}
+
+form input::placeholder {
+  color: #fff;
+}
+
+form button {
+  background-color: #fff;
+  border: none;
+  color: #1e1e2f;
+  cursor: pointer;
+  font-weight: 700;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  text-transform: uppercase;
+  width: 100%;
 }
 
 table {

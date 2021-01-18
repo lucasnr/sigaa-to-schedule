@@ -20,6 +20,8 @@
     '21h30 - 22h20',
   ];
 
+  /*
+
   const schedule = [
     {
       name: 'ESTRUTURA DE DADOS BÁSICAS I',
@@ -47,7 +49,12 @@
     },
   ];
 
+*/
+
+  const schedule = [];
+
   function clearTable() {
+    tbody.innerHTML = '';
     for (let i = 0; i < times.length; i++) {
       const time = times[i];
 
@@ -97,6 +104,22 @@
     }
   }
 
-  clearTable();
-  fillData();
+  function makeTable() {
+    clearTable();
+    fillData();
+  }
+  makeTable();
+
+  const form = document.querySelector('form');
+  const nameInput = form.querySelector('#name');
+  const codeInput = form.querySelector('#code');
+  form.onsubmit = (event) => {
+    event.preventDefault();
+    const newItem = {
+      name: nameInput.value,
+      sigaa: codeInput.value,
+    };
+    schedule.push(newItem);
+    makeTable();
+  };
 })();
