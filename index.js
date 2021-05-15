@@ -117,8 +117,8 @@
   form.onsubmit = (event) => {
     event.preventDefault();
     const newItem = {
-      name: nameInput.value,
-      sigaa: codeInput.value,
+      name: nameInput.value.trim(),
+      sigaa: codeInput.value.trim(),
     };
     schedule.push(newItem);
     makeTable();
