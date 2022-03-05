@@ -1,9 +1,23 @@
 (() => {
   const tbody = document.querySelector('table tbody');
   const form = document.querySelector('form');
-  const nameInput = form.querySelector('#name');
-  const codeInput = form.querySelector('#code');
   const items = form.querySelector('#items');
+
+  const colors = [];
+  const getColor = (index) => {
+    let color = colors[index];
+
+    if (!color) {
+      const letters = '0123456789ABCDEF';
+      color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      colors[index] = color;
+    }
+
+    return color;
+  };
 
   const times = [
     '07:00 - 07:50',
@@ -24,38 +38,34 @@
     '21h25 - 22h15',
   ];
 
-  /*
+  // const schedule = [
+  //   {
+  //     name: 'ESTRUTURA DE DADOS BÁSICAS I',
+  //     sigaa: '35M12',
+  //   },
+  //   {
+  //     name: 'LINGUAGEM DE PROGRAMAÇÃO I',
+  //     sigaa: '35M34',
+  //   },
+  //   {
+  //     name: 'ARQUITETURA DE COMPUTADORES',
+  //     sigaa: '24N34',
+  //   },
+  //   {
+  //     name: 'PRÁTICAS DE LEITURA E ESCRITA EM PORTUGUÊS II',
+  //     sigaa: '3N34',
+  //   },
+  //   {
+  //     name: 'FUNDAMENTOS MATEMÁTICOS DA COMPUTAÇÃO I',
+  //     sigaa: '246M34',
+  //   },
+  //   {
+  //     name: 'VETORES E GEOMETRIA ANALÍTICA',
+  //     sigaa: '35N12',
+  //   },
+  // ];
 
-  const schedule = [
-    {
-      name: 'ESTRUTURA DE DADOS BÁSICAS I',
-      sigaa: '35M12',
-    },
-    {
-      name: 'LINGUAGEM DE PROGRAMAÇÃO I',
-      sigaa: '35M34',
-    },
-    {
-      name: 'ARQUITETURA DE COMPUTADORES',
-      sigaa: '24N34',
-    },
-    {
-      name: 'PRÁTICAS DE LEITURA E ESCRITA EM PORTUGUÊS II',
-      sigaa: '3N34',
-    },
-    {
-      name: 'FUNDAMENTOS MATEMÁTICOS DA COMPUTAÇÃO I',
-      sigaa: '246M34',
-    },
-    {
-      name: 'VETORES E GEOMETRIA ANALÍTICA',
-      sigaa: '35N12',
-    },
-  ];
-
-*/
-
-  let schedule = [];
+  const schedule = [];
 
   function clearTable() {
     tbody.innerHTML = '';
@@ -65,9 +75,11 @@
       const tr = document.createElement('tr');
       for (let j = 0; j < 8; j++) {
         const td = document.createElement('td');
-        td.textContent = '---';
+        td.textContent = '';
 
-        if (j === 0) td.textContent = time;
+        if (j === 0) {
+          td.textContent = time;
+        }
 
         tr.appendChild(td);
       }
@@ -77,8 +89,8 @@
   }
 
   function fillData() {
-    for (let i = 0; i < schedule.length; i++) {
-      const item = schedule[i];
+    for (let index = 0; index < schedule.length; index++) {
+      const item = schedule[index];
       const [days, itemTimes] = item.sigaa.split(/[A-Z]/);
 
       const shift = item.sigaa.charAt(days.length);
@@ -92,8 +104,7 @@
 
         daysIndexes.forEach((day) => {
           const td = tr.querySelector(`td:nth-child(${day + 1})`);
-          if (td.textContent === '---') {
-            td.textContent = '';
+          if (td.textContent === '') {
             const container = document.createElement('div');
             container.classList.add('container');
             td.appendChild(container);
@@ -101,51 +112,65 @@
 
           const text = document.createElement('span');
           text.textContent = item.name;
+          text.style.borderColor = getColor(index);
 
           td.querySelector('.container').appendChild(text);
         });
       });
     }
+
+    const spans = document.querySelectorAll('tbody td .container span');
+    const height = Array.from(spans)
+      .map((span) => span.offsetHeight)
+      .reduce((acc, height) => {
+        return acc < height ? height : acc;
+      }, 0);
+    spans.forEach((span) => {
+      span.style.minHeight = height + 'px';
+    });
   }
 
-  function makeTable() {
+  function generateTable() {
     clearTable();
     fillData();
   }
-  makeTable();
+  generateTable();
 
-  form.onsubmit = (event) => {
-    event.preventDefault();
-    const newItem = {
-      name: nameInput.value.trim(),
-      sigaa: codeInput.value.trim(),
-    };
-    schedule.push(newItem);
-    makeTable();
-    displayItems();
-  };
-
-  function displayItems() {
+  function generateItems() {
     items.innerHTML = '';
     schedule.forEach((item, index) => {
-      const button = document.createElement('button');
-      button.classList.add('item');
-      button.type = 'button';
+      const div = document.createElement('div');
+      div.classList.add('item');
+      div.style.borderColor = getColor(index);
 
       const span = document.createElement('span');
       span.textContent = `${item.name} (${item.sigaa})`;
-      const remove = document.createElement('i');
+      div.appendChild(span);
+
+      const remove = document.createElement('button');
       remove.textContent = '\u00D7';
-      button.appendChild(span);
-      button.appendChild(remove);
-
-      button.onclick = () => {
-        schedule = schedule.filter((item, i) => i !== index);
-        displayItems();
-        makeTable();
+      remove.type = 'button';
+      remove.onclick = () => {
+        schedule.splice(index, 1);
+        generateItems();
+        generateTable();
       };
+      div.appendChild(remove);
 
-      items.appendChild(button);
+      items.appendChild(div);
     });
   }
+
+  const name = form.querySelector('#name');
+  const code = form.querySelector('#code');
+  form.onsubmit = (event) => {
+    event.preventDefault();
+    const newItem = {
+      name: name.value.trim(),
+      sigaa: code.value.trim(),
+    };
+    schedule.push(newItem);
+    generateTable();
+    generateItems();
+  };
 })();

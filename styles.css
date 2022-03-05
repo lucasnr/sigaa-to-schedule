@@ -31,7 +31,9 @@ form {
 
 form label {
   display: block;
+  font-size: 14px;
   margin-bottom: 0.5rem;
+  text-transform: uppercase;
 }
 
 form input {
@@ -64,18 +66,22 @@ form #items {
   margin-top: 1.5rem;
 }
 
-form #items button {
+form #items div {
   align-items: center;
   background-color: transparent;
-  border: 1px solid #fff;
+  border: 2px solid #fff;
   display: flex;
   justify-content: space-between;
+  font-size: 12px;
   padding: 0.5rem;
 }
 
-form #items button i {
+form #items div button {
+  background-color: transparent;
+  border: 2px solid #fff;
   font-size: 1rem;
   font-style: normal;
+  margin-left: 1rem;
 }
 
 table {
@@ -96,6 +102,10 @@ table thead th {
   padding-bottom: 0.5rem;
 }
 
+table tbody tr:nth-of-type(even) {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
 table tbody tr td:first-of-type {
   font-weight: 700;
   font-size: 1rem;
@@ -113,7 +123,10 @@ table tbody .container {
   grid-gap: 0.5rem;
 }
 
-table tbody .container > * {
+table tbody .container > span {
+  align-items: center;
+  border-bottom: 0.5rem solid transparent;
   background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
   padding: 0.5rem;
 }
