@@ -45,7 +45,7 @@ form input {
 }
 
 form input::placeholder {
-  color: #fff;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 form button[type='submit'] {
@@ -70,6 +70,7 @@ form #items div {
   align-items: center;
   background-color: transparent;
   border: 2px solid #fff;
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   font-size: 12px;

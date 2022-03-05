@@ -1,22 +1,28 @@
 (() => {
-  const tbody = document.querySelector('table tbody');
-  const form = document.querySelector('form');
-  const items = form.querySelector('#items');
-
   const colors = [];
+
+  const generateColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
   const getColor = (index) => {
     let color = colors[index];
 
     if (!color) {
-      const letters = '0123456789ABCDEF';
-      color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
+      color = generateColor();
       colors[index] = color;
     }
 
     return color;
+  };
+
+  const regenerateColor = (index) => {
+    colors[index] = generateColor();
   };
 
   const times = [
@@ -67,6 +73,7 @@
 
   const schedule = [];
 
+  const tbody = document.querySelector('table tbody');
   function clearTable() {
     tbody.innerHTML = '';
     for (let i = 0; i < times.length; i++) {
@@ -136,12 +143,19 @@
   }
   generateTable();
 
+  const form = document.querySelector('form');
+  const items = form.querySelector('#items');
   function generateItems() {
     items.innerHTML = '';
     schedule.forEach((item, index) => {
       const div = document.createElement('div');
       div.classList.add('item');
       div.style.borderColor = getColor(index);
+      div.onclick = () => {
+        regenerateColor(index);
+        generateItems();
+        generateTable();
+      };
 
       const span = document.createElement('span');
       span.textContent = `${item.name} (${item.sigaa})`;
@@ -150,8 +164,10 @@
       const remove = document.createElement('button');
       remove.textContent = '\u00D7';
       remove.type = 'button';
-      remove.onclick = () => {
+      remove.onclick = (event) => {
+        event.preventDefault();
         schedule.splice(index, 1);
+        colors.splice(index, 1);
         generateItems();
         generateTable();
       };
