@@ -1,30 +1,4 @@
 (() => {
-  const colors = [];
-
-  const generateColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
-
-  const getColor = (index) => {
-    let color = colors[index];
-
-    if (!color) {
-      color = generateColor();
-      colors[index] = color;
-    }
-
-    return color;
-  };
-
-  const regenerateColor = (index) => {
-    colors[index] = generateColor();
-  };
-
   const times = [
     '07:00 - 07:50',
     '07:50 - 08:40',
@@ -44,36 +18,42 @@
     '21h25 - 22h15',
   ];
 
-  // const schedule = [
-  //   {
-  //     name: 'ESTRUTURA DE DADOS BÁSICAS I',
-  //     sigaa: '35M12',
-  //   },
-  //   {
-  //     name: 'LINGUAGEM DE PROGRAMAÇÃO I',
-  //     sigaa: '35M34',
-  //   },
-  //   {
-  //     name: 'ARQUITETURA DE COMPUTADORES',
-  //     sigaa: '24N34',
-  //   },
-  //   {
-  //     name: 'PRÁTICAS DE LEITURA E ESCRITA EM PORTUGUÊS II',
-  //     sigaa: '3N34',
-  //   },
-  //   {
-  //     name: 'FUNDAMENTOS MATEMÁTICOS DA COMPUTAÇÃO I',
-  //     sigaa: '246M34',
-  //   },
-  //   {
-  //     name: 'VETORES E GEOMETRIA ANALÍTICA',
-  //     sigaa: '35N12',
-  //   },
-  // ];
-
-  const schedule = [];
+  const STORAGE_KEY = 'X-SIGAA-TO-SCHEDULE-DATA';
+  const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const { colors = [], schedule = [] } = stored;
 
   const tbody = document.querySelector('table tbody');
+  const form = document.querySelector('form');
+  const items = form.querySelector('#items');
+
+  let getColor;
+  let generateColor;
+  let regenerateColor;
+
+  getColor = (index) => {
+    let color = colors[index];
+
+    if (!color) {
+      color = generateColor();
+      colors[index] = color;
+    }
+
+    return color;
+  };
+
+  generateColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  regenerateColor = (index) => {
+    colors[index] = generateColor();
+  };
+
   function clearTable() {
     tbody.innerHTML = '';
     for (let i = 0; i < times.length; i++) {
@@ -141,10 +121,11 @@
     clearTable();
     fillData();
   }
-  generateTable();
 
-  const form = document.querySelector('form');
-  const items = form.querySelector('#items');
+  function updateStorage() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ colors, schedule }));
+  }
+
   function generateItems() {
     items.innerHTML = '';
     schedule.forEach((item, index) => {
@@ -155,6 +136,8 @@
         regenerateColor(index);
         generateItems();
         generateTable();
+
+        updateStorage();
       };
 
       const span = document.createElement('span');
@@ -170,6 +153,8 @@
         colors.splice(index, 1);
         generateItems();
         generateTable();
+
+        updateStorage();
       };
       div.appendChild(remove);
 
@@ -177,16 +162,24 @@
     });
   }
 
-  const name = form.querySelector('#name');
-  const code = form.querySelector('#code');
   form.onsubmit = (event) => {
     event.preventDefault();
+
+    const name = form.querySelector('#name');
+    const code = form.querySelector('#code');
+
     const newItem = {
       name: name.value.trim(),
       sigaa: code.value.trim(),
     };
     schedule.push(newItem);
+
     generateTable();
     generateItems();
+
+    updateStorage();
   };
+
+  generateTable();
+  generateItems();
 })();
